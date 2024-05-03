@@ -14,6 +14,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 import java.sql.Timestamp;
 
@@ -41,8 +43,20 @@ public class ChangePswController {
     @FXML
     protected void onSaveChangePswClicked(ActionEvent event) {
         User updatePsw = new User();
+        String newPassword = newPswField.getText();
+        String confirmPassword = confirmPswField.getText();
+
+        if (!newPassword.equals(confirmPassword)) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Password does not match. Please try again");
+            alert.showAndWait();
+            return;
+        }
+
         updatePsw.setUsername(usernameField.getText());
-        updatePsw.setPassword(newPswField.getCharacters().toString());
+        updatePsw.setPassword(newPassword);
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         updatePsw.setDate_modified(timestamp);
