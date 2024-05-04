@@ -45,10 +45,10 @@ public class CreateAccController {
 
 
         if (!usernameField.getText().matches(alphanumericRegex)) {
-            return "Invalid input for Email. Please enter alphanumeric characters only.";
+            return "Invalid input for Username. Please enter alphanumeric characters only.";
         }
         if (!entityIdField.getText().matches(alphanumericRegex)) {
-            return "Invalid input for Email. Please enter alphanumeric characters only.";
+            return "Invalid input for Entity. Please enter alphanumeric characters only.";
         }
         return null;
     }
