@@ -63,10 +63,10 @@ public class ChangePswController {
 
         try {
             userFacade.updatePassword(updatePsw);
-        } catch(Exception ex) {
-            ex.printStackTrace();;
-        }
-        finally {
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ;
+        } finally {
             try {
                 Stage previousStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 previousStage.close();
@@ -93,20 +93,19 @@ public class ChangePswController {
     @FXML
     protected void handleCancelChangePsw(MouseEvent event) {
         try {
-            Stage previousStage2 = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            previousStage2.close();
+            Stage previousStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            previousStage.close();
 
-            Stage dashboardStage2 = new Stage();
-            FXMLLoader loader2 = new FXMLLoader();
-            loader2.setLocation(getClass().getResource("/views/UserList.fxml"));
-            Parent root2 = loader2.load();
-            Scene scene2 = new Scene(root2);
-            dashboardStage2.setScene(scene2);
-            dashboardStage2.show();
+            Stage loginStage = new Stage();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/views/MainView.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            loginStage.setScene(scene);
+            loginStage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 }
 

@@ -139,25 +139,26 @@ public class AddEmployeeController implements Initializable {
 
     @FXML
     protected void handleCancelAddEmployeetButton(ActionEvent event) {
-        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        stage.hide();
-        showDashboard1();
-    }
-
-    private void showDashboard1() {
         try {
-            Stage dashboardStage = new Stage();
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/views/EmployeeList.fxml"));
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainView.fxml"));
             Parent root = loader.load();
+
+
+            Stage loginStage = new Stage();
             Scene scene = new Scene(root);
-            dashboardStage.setScene(scene);
-            dashboardStage.show();
+            loginStage.setScene(scene);
+
+
+            loginStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         sex.getItems().addAll("Male","Female");
