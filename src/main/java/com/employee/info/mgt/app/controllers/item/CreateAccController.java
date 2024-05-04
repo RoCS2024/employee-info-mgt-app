@@ -64,7 +64,6 @@ public class CreateAccController {
             throw new RuntimeException(e);
         }
         User addUser = new User();
-        addUser.setId(Integer.parseInt(idField.getText()));
         addUser.setUsername(usernameField.getText());
         addUser.setEntity_id(entityIdField.getText());
 
