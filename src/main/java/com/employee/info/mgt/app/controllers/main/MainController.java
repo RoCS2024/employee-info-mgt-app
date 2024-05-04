@@ -45,7 +45,7 @@ public class MainController {
 
         try {
             User currentUser = userFacade.findUserByUsername(username);
-            if (username.isEmpty()) {
+            if (username.isEmpty() || password.isEmpty()) {
                 showAlert("Login Failed", "Please enter your username and password.", Alert.AlertType.ERROR);
             } else if (!username.matches("[a-zA-Z0-9~`!@#$%^&*()_={}|:;\"'<,>.?/]+")) {
                 showAlert("Login Failed", "Username should only contain alpha-numeric characters. Please enter valid input", Alert.AlertType.ERROR);
