@@ -41,6 +41,16 @@ public class ChangePswController {
     private UserFacade userFacade = new UserFacadeImpl();
 
     @FXML
+    private void initialize() {
+        saveChangePswButton.disableProperty().bind(
+                usernameField.textProperty().isEmpty()
+                        .or(currentPswField.textProperty().isEmpty())
+                        .or(newPswField.textProperty().isEmpty())
+                        .or(confirmPswField.textProperty().isEmpty())
+        );
+    }
+
+    @FXML
     protected void onSaveChangePswClicked(ActionEvent event) {
         User updatePsw = new User();
         String newPassword = newPswField.getText();
