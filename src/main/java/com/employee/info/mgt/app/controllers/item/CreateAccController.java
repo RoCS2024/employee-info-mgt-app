@@ -60,23 +60,24 @@ public class CreateAccController {
                 showAlert("Invalid Input", invalidInputMessage);
                 return;
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        User addUser = new User();
-        addUser.setUsername(usernameField.getText());
-        addUser.setEntity_id(entityIdField.getText());
+            String entityId = entityIdField.getText();
+            if (isEntityIdTaken(entityId)) {
+                showAlert("Duplicate Entity ID", "This Entity ID is already taken.");
+                return;
+            }
+            User addUser = new User();
+            addUser.setUsername(usernameField.getText());
+            addUser.setEntity_id(entityIdField.getText());
 
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        addUser.setDate_created(timestamp);
-        addUser.setDate_modified(timestamp);
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            addUser.setDate_created(timestamp);
+            addUser.setDate_modified(timestamp);
 
-        try {
+
             userFacade.saveUser(addUser);
-        } catch(Exception ex) {
-            ex.printStackTrace();;
-        }
-        finally {
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
             try {
                 Stage previousStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 previousStage.close();
@@ -92,7 +93,16 @@ public class CreateAccController {
                 e.printStackTrace();
             }
         }
-    }private void showAlert(String title, String message) {
+    }
+        private boolean isEntityIdTaken(String entityId) {
+            try {
+                return userFacade.getAllUsers().stream().anyMatch(user -> user.getEntity_id().equals(entityId));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return false;
+        }
+    private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
