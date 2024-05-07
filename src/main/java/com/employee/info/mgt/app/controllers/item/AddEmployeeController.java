@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -22,9 +23,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.regex.Pattern;
 
 public class AddEmployeeController implements Initializable {
 
@@ -87,9 +89,50 @@ public class AddEmployeeController implements Initializable {
     private EmployeeDao employeeDao = new EmployeeDaoImpl();
     private EmployeeFacade employeeFacade = new EmployeeFacadeImpl(employeeDao);
 
+    private String getInvalidInputMessage() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date selectedBirthday = null;
+        try {
+            selectedBirthday = dateFormat.parse(birthday.getValue().toString());
+        } catch (ParseException e) {
+            return "Invalid input for Birthday. Please select a valid date.";
+        }
+        Calendar selectedCal = Calendar.getInstance();
+        selectedCal.setTime(selectedBirthday);
+
+
+        Calendar seventeenYearsAgo = Calendar.getInstance();
+        seventeenYearsAgo.add(Calendar.YEAR, -17);
+
+        if (selectedCal.after(seventeenYearsAgo)) {
+            return "Invalid input for Birthday. Please select a date from at least 17 years ago.";
+        }
+        return null;
+    }
+
     @FXML
     protected void onAddEmployeeClicked(ActionEvent event) throws IOException {
         try{
+            Map<String, String> invalidFields = getInvalidFields();
+            String emailInput = email.getText();
+            if (!isValidEmail(emailInput)) {
+                showAlert("Invalid Email Address", " Invalid Email Address. and not accept email without “@gmail.com“.");
+                return;
+            }
+            if (!invalidFields.isEmpty()) {
+                displayError("Invalid input in the following fields:", invalidFields);
+                return;
+            }
+            try {
+                String invalidInputMessage = getInvalidInputMessage();
+                if (invalidInputMessage != null) {
+                    showAlert("Invalid Input", invalidInputMessage);
+                    return;
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
             Employee addEmployee = new Employee();
             addEmployee.setEmployeeNo(employeeId.getText());
             addEmployee.setPositionInRC((String) positionRc.getValue());
@@ -134,6 +177,17 @@ public class AddEmployeeController implements Initializable {
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         stage.close();
     }
+    private boolean isValidEmail(String email) {
+        return email != null && (email.toLowerCase().endsWith("@gmail.com") || email.toLowerCase().endsWith(".com")) && email.contains("@");
+    }
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 
 
 
@@ -164,6 +218,38 @@ public class AddEmployeeController implements Initializable {
         civilStatus.getItems().addAll("Single", "Married");
         positionRc.getItems().addAll("MIS", "Dean", "Discipline Officer", "Teacher", "Cashier", "Registrar");
     }
+    private Map<String, String> getInvalidFields() {
+        Map<String, String> invalidFields = new HashMap<>();
 
 
+        if (!isValidInput("Email", email.getText())) {
+            invalidFields.put("Email", email.getText());
+        }
+
+
+        return invalidFields;
+    }
+    private boolean isValidInput(String fieldName, String input) {
+        switch (fieldName) {
+            case "Email":
+                return Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", input);
+
+
+
+            default:
+                return false;
+        }
+    }
+    private void displayError(String header, Map<String, String> invalidFields) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Invalid Input");
+        alert.setHeaderText(header);
+        StringBuilder content = new StringBuilder();
+        invalidFields.forEach((field, value) -> content.append(field).append(": ").append(value).append("\n"));
+        alert.setContentText(content.toString());
+        alert.showAndWait();
+    }
 }
+
+
+
