@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -21,6 +22,9 @@ public class ForgotPswController {
     private TextField usernameField;
 
     @FXML
+    private TextField show_newPsw;
+
+    @FXML
     private TextField nicknameField;
 
     @FXML
@@ -28,6 +32,12 @@ public class ForgotPswController {
 
     @FXML
     private Button saveForgotPswButton;
+
+    @FXML
+    private ToggleButton toggle_button7;
+
+    @FXML
+    private ToggleButton toggle_button8;
 
     private User user;
 
@@ -84,4 +94,35 @@ public class ForgotPswController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    void changeVisibility7(ActionEvent event){
+        if (toggle_button8.isSelected()){
+            show_newPsw.setText(newPswField.getText());
+            show_newPsw.setVisible(true);
+            newPswField.setVisible(false);
+            toggle_button8.setVisible(false);
+            return;
+        }
+        newPswField.setText(show_newPsw.getText());
+        newPswField.setVisible(true);
+        show_newPsw.setVisible(false);
+        toggle_button8.setVisible(true);
+    }
+
+    @FXML
+    void changeVisibility8(ActionEvent event){
+        if (toggle_button7.isSelected()){
+            newPswField.setText(show_newPsw.getText());
+            newPswField.setVisible(true);
+            show_newPsw.setVisible(false);
+            toggle_button8.setVisible(true);
+            return;
+        }
+        show_newPsw.setText(newPswField.getText());
+        show_newPsw.setVisible(true);
+        newPswField.setVisible(false);
+        toggle_button8.setVisible(false);
+    }
+
 }
