@@ -36,10 +36,11 @@ public class CreateAccController {
     private User user;
 
     private UserFacade userFacade = new UserFacadeImpl();
+
     private String getInvalidInputMessage() {
         String alphanumericRegex = "[a-zA-Z0-9]+";
 
-        if ( usernameField.getText().isEmpty() || entityIdField.getText().isEmpty()) {
+        if (usernameField.getText().isEmpty() || entityIdField.getText().isEmpty()) {
             return "All fields must be filled.";
         }
 
@@ -52,6 +53,7 @@ public class CreateAccController {
         }
         return null;
     }
+
     @FXML
     protected void saveRegisterClicked(ActionEvent event) {
         try {
@@ -78,6 +80,7 @@ public class CreateAccController {
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
+            if (getInvalidInputMessage() == null && !isEntityIdTaken(entityIdField.getText())) {
             try {
                 Stage previousStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 previousStage.close();
@@ -94,6 +97,8 @@ public class CreateAccController {
             }
         }
     }
+
+}
         private boolean isEntityIdTaken(String entityId) {
             try {
                 return userFacade.getAllUsers().stream().anyMatch(user -> user.getEntity_id().equals(entityId));
