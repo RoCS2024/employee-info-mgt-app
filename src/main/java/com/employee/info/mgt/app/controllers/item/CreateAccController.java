@@ -48,7 +48,7 @@ public class CreateAccController {
     }
 
     private String getInvalidInputMessage() {
-        String alphanumericRegex = "[a-zA-Z0-9]+";
+        String alphanumericRegex = "[a-zA-Z0-9~`!@#$%^&*()_={}|:;\"'<,>.?/]+";
 
         if (usernameField.getText().isEmpty() || entityIdField.getText().isEmpty()) {
             return "All fields must be filled.";
