@@ -3,6 +3,8 @@ package com.employee.info.mgt.app.controllers.item;
 import com.user.management.appl.facade.user.UserFacade;
 import com.user.management.appl.facade.user.impl.UserFacadeImpl;
 import com.user.management.appl.model.user.User;
+import com.user.management.data.user.dao.UserDao;
+import com.user.management.data.user.dao.impl.UserDaoImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,7 +37,15 @@ public class CreateAccController {
 
     private User user;
 
-    private UserFacade userFacade = new UserFacadeImpl();
+    private UserFacade userFacade;
+
+    private UserDao userDao;
+
+    public CreateAccController() {
+        userDao = new UserDaoImpl();
+
+        userFacade = new UserFacadeImpl(userDao);
+    }
 
     private String getInvalidInputMessage() {
         String alphanumericRegex = "[a-zA-Z0-9]+";

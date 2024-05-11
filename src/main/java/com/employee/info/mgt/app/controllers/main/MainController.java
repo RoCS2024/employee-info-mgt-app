@@ -3,6 +3,8 @@ package com.employee.info.mgt.app.controllers.main;
 import com.user.management.appl.facade.user.UserFacade;
 import com.user.management.appl.facade.user.impl.UserFacadeImpl;
 import com.user.management.appl.model.user.User;
+import com.user.management.data.user.dao.UserDao;
+import com.user.management.data.user.dao.impl.UserDaoImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,7 +37,15 @@ public class MainController {
     @FXML
     private ToggleButton toggleButton;
 
-    private UserFacade userFacade = new UserFacadeImpl();
+    private UserFacade userFacade;
+
+    private UserDao userDao;
+
+    public MainController() {
+        userDao = new UserDaoImpl();
+
+        userFacade = new UserFacadeImpl(userDao);
+    }
 
     @FXML
     protected void logButtonOnAction(ActionEvent event) {

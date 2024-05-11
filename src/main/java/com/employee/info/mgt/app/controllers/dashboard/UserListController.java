@@ -6,6 +6,8 @@ import com.user.management.appl.facade.user.UserFacade;
 import com.user.management.appl.facade.user.impl.UserFacadeImpl;
 import com.user.management.appl.model.user.User;
 
+import com.user.management.data.user.dao.UserDao;
+import com.user.management.data.user.dao.impl.UserDaoImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -47,7 +49,15 @@ public class UserListController implements Initializable {
     @FXML
     TableView table;
 
-    private UserFacade userFacade = new UserFacadeImpl();
+    private UserFacade userFacade;
+
+    private UserDao userDao;
+
+    public UserListController() {
+        userDao = new UserDaoImpl();
+
+        userFacade = new UserFacadeImpl(userDao);
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
