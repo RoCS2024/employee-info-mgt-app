@@ -74,7 +74,7 @@ public class CreateAccController {
             }
             String entityId = entityIdField.getText();
             if (isEntityIdTaken(entityId)) {
-                showAlert("Duplicate Entity ID", "This Entity ID is already taken.");
+                showAlert("Duplicate Entity ID", "Entity ID already Exists.");
                 return;
             }
             User addUser = new User();
