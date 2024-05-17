@@ -48,18 +48,18 @@ public class CreateAccController {
     }
 
     private String getInvalidInputMessage() {
-        String alphanumericRegex = "[a-zA-Z0-9~`!@#$%^&*()_={}|:;\"'<,>.?/]+";
+        String alphanumericRegex = "[a-zA-Z0-9~`!@#$%^&*()_={}|:;\"'<,>.?/-]+";
 
         if (usernameField.getText().isEmpty() || entityIdField.getText().isEmpty()) {
             return "All fields must be filled.";
         }
 
-
         if (!usernameField.getText().matches(alphanumericRegex)) {
             return "Invalid input for Username. Please enter alphanumeric characters only.";
         }
+
         if (!entityIdField.getText().matches(alphanumericRegex)) {
-            return "Invalid input for Entity. Please enter alphanumeric characters only.";
+            return "Invalid input for Entity. Please enter alphanumeric characters and dashes only.";
         }
         return null;
     }
